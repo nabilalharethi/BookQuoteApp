@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 //services
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 //DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("BookQuoteDb"));
@@ -50,6 +52,11 @@ builder.Services.AddCors(Options =>
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 app.UseCors("AllowAngularApp");
 app.UseAuthentication();
 app.UseAuthorization();
