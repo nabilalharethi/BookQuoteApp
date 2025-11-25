@@ -1,0 +1,12 @@
+.table {
+  background-color: white;
+}
+
+[data-bs-theme="dark"] .table {
+  background-color: var(--bs-dark);
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
