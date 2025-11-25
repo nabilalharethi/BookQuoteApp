@@ -10,26 +10,26 @@
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
             <div class="mb-3">
-              <label for="username" class="form-label">Username</label>
+              <label for="Username" class="form-label">Username</label>
               <input 
                 type="text" 
                 class="form-control" 
-                id="username" 
-                name="username" 
-                [(ngModel)]="username" 
+                id="Username" 
+                name="Username" 
+                [(ngModel)]="Username" 
                 required 
                 placeholder="Choose a username"
               />
             </div>
 
             <div class="mb-3">
-              <label for="password" class="form-label">Password</label>
+              <label for="Password" class="form-label">Password</label>
               <input 
-                type="password" 
+                type="Password" 
                 class="form-control" 
-                id="password" 
-                name="password" 
-                [(ngModel)]="password" 
+                id="Password" 
+                name="Password" 
+                [(ngModel)]="Password" 
                 required 
                 placeholder="Choose a password"
               />
@@ -38,7 +38,7 @@
             <div class="mb-3">
               <label for="confirmPassword" class="form-label">Confirm Password</label>
               <input 
-                type="password" 
+                type="Password" 
                 class="form-control" 
                 id="confirmPassword" 
                 name="confirmPassword" 

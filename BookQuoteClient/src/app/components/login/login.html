@@ -10,36 +10,34 @@
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
             <div class="mb-3">
-              <label for="username" class="form-label">Username</label>
+              <label for="Username" class="form-label">Username</label>
               <input 
                 type="text" 
                 class="form-control" 
-                id="username" 
-                name="username" 
-                [(ngModel)]="username" 
+                id="Username" 
+                name="Username" 
+                [(ngModel)]="Username" 
                 required 
                 placeholder="Enter your username"
               />
             </div>
 
             <div class="mb-3">
-              <label for="password" class="form-label">Password</label>
+              <label for="Password" class="form-label">Password</label>
               <input 
-                type="password" 
+                type="Password" 
                 class="form-control" 
-                id="password" 
-                name="password" 
-                [(ngModel)]="password" 
+                id="Password" 
+                name="Password" 
+                [(ngModel)]="Password" 
                 required 
                 placeholder="Enter your password"
               />
             </div>
 
-            @if (errorMessage) {
-              <div class="alert alert-danger">
-                <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
-              </div>
-            }
+           <div *ngIf="errorMessage" class="alert alert-danger">
+              <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+            </div>
 
             <button 
               type="submit" 

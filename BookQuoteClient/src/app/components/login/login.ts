@@ -9,28 +9,35 @@ import { Auth } from '../../services/auth';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrls: ['./login.css']
 })
 export class Login {
   private authService = inject(Auth);
   private router = inject(Router);
 
-  username = '';
-  password = '';
+  Username = '';
+  Password = '';
   errorMessage = '';
+  isLoading = false;
 
   onSubmit(): void {
     this.errorMessage = '';
+    this.isLoading = true;
+
+    console.log("Login attempt:" , this.Username);
     
     this.authService.login({ 
-      username: this.username, 
-      password: this.password 
+      Username: this.Username, 
+      Password: this.Password 
     }).subscribe({
-      next: () => {
+      next: (response) => {
+        console.log("Login successful:" , response)
+        this.isLoading = false;
         this.router.navigate(['/books']);
       },
       error: (error) => {
         this.errorMessage = error.error || 'Login failed. Please try again.';
+      
       }
     });
   }

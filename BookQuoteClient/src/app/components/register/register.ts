@@ -15,22 +15,25 @@ export class Register {
   private authService = inject(Auth);
   private router = inject(Router);
 
-  username = '';
-  password = '';
+  Username = '';
+  Password = '';
   confirmPassword = '';
   errorMessage = '';
+  isLoading = false;
 
   onSubmit(): void {
     this.errorMessage = '';
     
-    if (this.password !== this.confirmPassword) {
+    if (this.Password !== this.confirmPassword) {
       this.errorMessage = 'Passwords do not match';
       return;
     }
+    this.isLoading = true;
+    console.log("Register attrmpt:", this.Username);
 
     this.authService.register({ 
-      username: this.username, 
-      password: this.password 
+      Username: this.Username, 
+      Password: this.Password 
     }).subscribe({
       next: () => {
         this.router.navigate(['/books']);

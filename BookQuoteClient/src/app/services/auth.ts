@@ -4,17 +4,17 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 export interface AuthResponse {
   token: string;
-  username: string;
+  Username: string;
 }
 
 export interface LoginRequest {
-  username: string;
-  password: string;
+  Username: string;
+  Password: string;
 }
 
 export interface RegisterRequest {
-  username: string;
-  password: string;
+  Username: string;
+  Password: string;
 }
 
 @Injectable({
@@ -55,7 +55,7 @@ export class Auth {
 
   private handleAuthResponse(response: AuthResponse): void {
     localStorage.setItem(this.tokenKey, response.token);
-    localStorage.setItem(this.usernameKey, response.username);
+    localStorage.setItem(this.usernameKey, response.Username);
     this.isAuthenticatedSubject.next(true);
   }
 

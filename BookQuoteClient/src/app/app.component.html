@@ -1,0 +1,66 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" 
+     *ngIf="isAuthenticated$ | async">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <i class="fas fa-book-reader"></i> {{ title }}
+    </a>
+
+    <button 
+      class="navbar-toggler" 
+      type="button" 
+      data-bs-toggle="collapse" 
+      data-bs-target="#navbarNav"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a 
+            class="nav-link" 
+            routerLink="/books" 
+            routerLinkActive="active"
+          >
+            <i class="fas fa-book"></i> Books
+          </a>
+        </li>
+        <li class="nav-item">
+          <a 
+            class="nav-link" 
+            routerLink="/quotes" 
+            routerLinkActive="active"
+          >
+            <i class="fas fa-quote-left"></i> My Quotes
+          </a>
+        </li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-3">
+        <span class="text-white">
+          <i class="fas fa-user"></i> {{ getUsername() }}
+        </span>
+
+        <button 
+          class="btn btn-outline-light btn-sm" 
+          (click)="toggleTheme()"
+        >
+          <i 
+            class="fas" 
+            [ngClass]="(darkMode$ | async) ? 'fa-sun' : 'fa-moon'"
+          ></i>
+          {{ (darkMode$ | async) ? 'Light' : 'Dark' }}
+        </button>
+
+        <button 
+          class="btn btn-outline-light btn-sm" 
+          (click)="logout()"
+        >
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>

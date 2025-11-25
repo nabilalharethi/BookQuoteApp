@@ -28,7 +28,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<ActionResult<AuthorResponseDto>> Register(
+    public async Task<ActionResult<AuthResponseDto >> Register(
         RegistrDto request)
     {
         if (await _context.Users.AnyAsync(u => u.Username == request.Username))
@@ -40,7 +40,7 @@ public class AuthController : ControllerBase
         var user = new User
         {
             Username = request.Username,
-            PasswordHash = HashPassword(request.password)
+            PasswordHash = HashPassword(request.Password)
         };
 
         _context.Users.Add(user);
@@ -48,7 +48,7 @@ public class AuthController : ControllerBase
 
         var token = CreateToken(user);
 
-        return Ok(new AuthorResponseDto
+        return Ok(new AuthResponseDto 
         {
             Token = token,
             Username = user.Username
@@ -57,19 +57,51 @@ public class AuthController : ControllerBase
 
   
 
-    private string HashPassword(string password)
+    private string HashPassword(string Password)
     {
         using var sha256 = SHA256.Create();
         var hashedBytes = sha256.ComputeHash(
-            Encoding.UTF8.GetBytes(password));
+            Encoding.UTF8.GetBytes(Password));
         return Convert.ToBase64String(hashedBytes);
     }
 
-    private bool VerifyPassword(string password, string hash)
+    private bool VerifyPassword(string Password, string hash)
     {
-        var hashOfInput = HashPassword(password);
+        var hashOfInput = HashPassword(Password);
         return hashOfInput == hash;
     }
+
+
+       [HttpPost("login")]
+    public async Task<ActionResult<AuthResponseDto>> Login(LoginDto request)
+    {
+        // Find user by username
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Username == request.Username);
+
+        // Verify user exists and password is correct
+        if (user == null || !VerifyPassword(request.Password, user.PasswordHash))
+        {
+            return BadRequest("Invalid username or password");
+        }
+
+        // Generate JWT token
+        var token = CreateToken(user);
+
+        return Ok(new AuthResponseDto
+        {
+            Token = token,
+            Username = user.Username
+        });
+    }
+
+
+
+
+
+
+
+
 
     private string CreateToken(User user)
     {

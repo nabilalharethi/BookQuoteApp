@@ -1,66 +1,71 @@
-using System.Text;
-using BookQuoteAPI.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-
+using System.Text;
+using BookQuoteAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//services
+// Add services
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//DbContext
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("BookQuoteDb"));
+// Add DbContext
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseInMemoryDatabase("BookQuoteDb"));
 
-//jwt authentication
+// Add JWT Authentication
+var jwtKey = builder.Configuration["Jwt:Key"] ?? 
+    "ThisIsASecretKeyForJWTTokenGenerationThatIsLongEnoughForHS512Algorithm123456789";
+var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "BookQuoteAPI";
+var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "BookQuoteApp";
 
-var jwtkey = builder.Configuration["Jwt:key"] ??
-"ThisIsASecretKeyForJWTTokenGenerationThatIsLongEnoughForHS512Algorithm123456789";
-var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "BookQioteAPI";
-var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "BookQuteAPP";
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateIssuerSigningKey = true,
-        ValidAudience = jwtAudience,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtkey))
-    };
-});
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwtKey))
+        };
+    });
 
-// CORS
 
-builder.Services.AddCors(Options =>
+builder.Services.AddCors(options =>
 {
-    Options.AddPolicy("AllowAngularAPP",
-    policy =>
-    {
-        policy.WithOrigins(
-            "http://localhost:4200",
-                "http://localhost:4201")
+    options.AddPolicy("AllowAngularApp",
+        policy =>
+        {
+            policy.WithOrigins(
+                "http://localhost:4200",
+                "http://localhost:4201",
+                "http://127.0.0.1:4200")
                   .AllowAnyHeader()
-                  .AllowAnyMethod();
+                  .AllowAnyMethod()
+                  .AllowCredentials();
         });
 });
 
-
 var app = builder.Build();
 
+// Configure middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors("AllowAngularApp");
+
+
+app.UseCors("AllowAngularApp");  
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
