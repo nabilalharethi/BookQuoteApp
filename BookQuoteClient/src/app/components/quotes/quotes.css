@@ -1,0 +1,18 @@
+.quote-card {
+  transition: transform 0.2s;
+}
+
+.quote-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.quote-text {
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.blockquote-footer {
+  font-size: 1rem;
+}

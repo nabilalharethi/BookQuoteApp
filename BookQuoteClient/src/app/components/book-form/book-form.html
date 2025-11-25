@@ -1,0 +1,79 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">
+            <i class="fas fa-book"></i>
+            {{ isEditMode ? 'Edit Book' : 'Add New Book' }}
+          </h3>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" #bookForm="ngForm">
+            <div class="mb-3">
+              <label for="title" class="form-label">Title *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="title" 
+                name="title" 
+                [(ngModel)]="book.title" 
+                required 
+                placeholder="Enter book title"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="author" class="form-label">Author *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="author" 
+                name="author" 
+                [(ngModel)]="book.author" 
+                required 
+                placeholder="Enter author name"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="publicationDate" class="form-label">Publication Date *</label>
+              <input 
+                type="date" 
+                class="form-control" 
+                id="publicationDate" 
+                name="publicationDate" 
+                [(ngModel)]="book.publicationDate" 
+                required
+              />
+            </div>
+
+            @if (errorMessage) {
+              <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+              </div>
+            }
+
+            <div class="d-flex gap-2">
+              <button 
+                type="submit" 
+                class="btn btn-primary" 
+                [disabled]="!bookForm.form.valid"
+              >
+                <i class="fas fa-save"></i> 
+                {{ isEditMode ? 'Update Book' : 'Create Book' }}
+              </button>
+              <button 
+                type="button" 
+                class="btn btn-secondary" 
+                (click)="cancel()"
+              >
+                <i class="fas fa-times"></i> Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
