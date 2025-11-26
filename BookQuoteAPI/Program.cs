@@ -101,6 +101,8 @@ app.UseHttpsRedirection();
 app.UseCors("AllowAngularApp");
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapGet("/", () => "BookQuoteAPI is running!");
+
 app.MapControllers();
 
 app.Run();
