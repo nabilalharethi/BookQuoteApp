@@ -12,6 +12,7 @@ export interface Quote {
 export class QuoteService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:5000/api/quotes';
+    quotes$: any;
 
   getQuotes(): Observable<Quote[]> {
     return this.http.get<Quote[]>(this.apiUrl);

@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 export interface Book {
   id?: number;
@@ -13,6 +13,21 @@ export interface Book {
 export class BookService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:5000/api/books';
+
+  private bookSubject = new BehaviorSubject<Book[]>([]);
+  books$ = this.bookSubject.asObservable();
+
+  constructor() {
+    this.loadBooks(); // initial load
+  }
+
+    loadBooks(): void {
+    this.http.get<Book[]>(this.apiUrl).subscribe({
+      next: (books) => this.bookSubject.next(books),
+      error: (err) => console.error('Failed to load books:', err)
+    });
+  }
+
 
   getBooks(): Observable<Book[]> {
     return this.http.get<Book[]>(this.apiUrl);
@@ -27,10 +42,14 @@ export class BookService {
   }
 
   updateBook(id: number, book: Book): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/${id}`, book);
+    return this.http.put<void>(`${this.apiUrl}/${id}`, book).pipe(
+    tap(() => this.loadBooks())
+    );
   }
 
   deleteBook(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+    tap(() => this.loadBooks())
+  );
   }
 }

@@ -3,6 +3,7 @@ import { Login } from './components/login/login';
 import { Books } from './components/books/books';
 import { Quotes } from './components/quotes/quotes';
 import { Register } from './components/register/register';
+import { BookForm } from './components/book-form/book-form';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -10,4 +11,5 @@ export const routes: Routes = [
   { path: 'register', component: Register },
   { path: 'books', component: Books },
   { path: 'quotes', component: Quotes },
+  { path: 'books/new', component: BookForm },
 ];

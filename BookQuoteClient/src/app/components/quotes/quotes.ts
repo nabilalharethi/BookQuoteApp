@@ -8,7 +8,7 @@ import { QuoteService, Quote } from '../../services/quote.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './quotes.html',
-  styleUrl: './quotes.css'
+  styleUrls: ['./quotes.css']
 })
 export class Quotes implements OnInit {
   private quoteService = inject(QuoteService);
@@ -23,23 +23,15 @@ export class Quotes implements OnInit {
     author: '' 
   };
 
-  ngOnInit(): void {
-    this.loadQuotes();
-  }
-
-  loadQuotes(): void {
-    this.loading = true;
-    this.quoteService.getQuotes().subscribe({
-      next: (quotes) => {
-        this.quotes = quotes;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error loading quotes:', error);
-        this.loading = false;
-      }
+   ngOnInit(): void {
+   
+    this.quoteService.quotes$.subscribe({
+      next: (quotes: Quote[]) => this.quotes = quotes.slice(0, 5), // show only 5
+      error: (err: any) => console.error('Error loading quotes:', err)
     });
   }
+
+
 
   showAddForm(): void {
     this.showForm = true;
@@ -60,7 +52,7 @@ export class Quotes implements OnInit {
         this.newQuote
       ).subscribe({
         next: () => {
-          this.loadQuotes();
+          
           this.cancelForm();
         },
         error: (error) => {
@@ -71,7 +63,7 @@ export class Quotes implements OnInit {
     } else {
       this.quoteService.createQuote(this.newQuote).subscribe({
         next: () => {
-          this.loadQuotes();
+          
           this.cancelForm();
         },
         error: (error) => {
@@ -95,7 +87,7 @@ export class Quotes implements OnInit {
 
     this.quoteService.deleteQuote(id).subscribe({
       next: () => {
-        this.loadQuotes();
+        
       },
       error: (error) => {
         console.error('Error deleting quote:', error);
