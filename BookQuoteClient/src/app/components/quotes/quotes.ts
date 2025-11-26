@@ -31,7 +31,7 @@ ngOnInit(): void {
 
   this.quoteService.quotes$.subscribe({
     next: (quotes: Quote[]) => {
-      this.quotes = quotes.slice(0, 5); // show only 5
+      this.quotes = quotes;
       this.loading = false;
     },
     error: (err: any) => {

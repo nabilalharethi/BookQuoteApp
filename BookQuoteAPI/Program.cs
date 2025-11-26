@@ -41,8 +41,11 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // Configure Database
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+    ?? builder.Configuration["DATABASE_URL"];
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseInMemoryDatabase("BookQuoteDb"));
+    options.UseNpgsql(connectionString));
 
 // Configure JWT Authentication
 var jwtKey = builder.Configuration["Jwt:Key"] ?? 
@@ -75,7 +78,10 @@ builder.Services.AddCors(options =>
             policy.WithOrigins(
                     "http://localhost:4200",
                     "http://localhost:4201",
-                    "http://127.0.0.1:4200")
+                    "http://127.0.0.1:4200",
+                    "https://*.netlify.app",  // Allow Netlify
+                    "https://*.onrender.com") // Allow Render
+                  .SetIsOriginAllowedToAllowWildcardSubdomains()
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials();
