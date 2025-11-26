@@ -19,7 +19,7 @@ COPY --from=build /app/out .
 EXPOSE 8080
 
 # Set environment variables
-ENV ASPNETCORE_URLS=http://+:8080
+ENV ASPNETCORE_URLS=http://+:$PORT
 
 # Run the application
 ENTRYPOINT ["dotnet", "BookQuoteAPI.dll"]
