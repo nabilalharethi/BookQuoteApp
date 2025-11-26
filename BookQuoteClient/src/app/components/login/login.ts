@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { Auth } from '../../services/auth';
+import { Auth, LoginRequest } from '../../services/auth';
 
 @Component({
   selector: 'app-login',
@@ -12,32 +12,34 @@ import { Auth } from '../../services/auth';
   styleUrls: ['./login.css']
 })
 export class Login {
+  Username: string = '';
+  Password: string = '';
+  errorMessage: string = '';
+  isLoading: boolean = false;
+
   private authService = inject(Auth);
   private router = inject(Router);
 
-  Username = '';
-  Password = '';
-  errorMessage = '';
-  isLoading = false;
+  onSubmit(loginForm: NgForm): void {
+    if (loginForm.invalid) return;
 
-  onSubmit(): void {
-    this.errorMessage = '';
     this.isLoading = true;
+    this.errorMessage = '';
 
-    console.log("Login attempt:" , this.Username);
-    
-    this.authService.login({ 
-      Username: this.Username, 
-      Password: this.Password 
-    }).subscribe({
-      next: (response) => {
-        console.log("Login successful:" , response)
+    const request: LoginRequest = {
+      Username: this.Username,
+      Password: this.Password
+    };
+
+    this.authService.login(request).subscribe({
+      next: (res) => {
         this.isLoading = false;
         this.router.navigate(['/books']);
       },
-      error: (error) => {
-        this.errorMessage = error.error || 'Login failed. Please try again.';
-      
+      error: (err) => {
+        this.isLoading = false;
+        // Display backend error or default message
+        this.errorMessage = err.error || 'Invalid username or password';
       }
     });
   }

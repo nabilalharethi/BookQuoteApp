@@ -1,6 +1,8 @@
 using BookQuoteAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
+namespace BookQuoteAPI.Controllers;
+
 [ApiController]
 [Route("api/[controller]")]
 public class QuotesController : ControllerBase
@@ -9,7 +11,7 @@ public class QuotesController : ControllerBase
     {
         new Quote { Id = 1, Text = "The only limit is your mind.", Author = "Anonymous", UserId = 1 },
         new Quote { Id = 2, Text = "Knowledge is power.", Author = "Francis Bacon", UserId = 1 }
-        // Add more if needed
+        
     };
 
     [HttpGet]

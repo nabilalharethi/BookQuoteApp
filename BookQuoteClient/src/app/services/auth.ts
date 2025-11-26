@@ -38,7 +38,10 @@ export class Auth {
   register(request: RegisterRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(
       `${this.apiUrl}/register`, 
-      request
+      request,
+            {
+      headers: {"Content-Type": "application/json"}
+    }
     ).pipe(
       tap(response => this.handleAuthResponse(response))
     );
@@ -47,7 +50,10 @@ export class Auth {
   login(request: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(
       `${this.apiUrl}/login`, 
-      request
+      request,
+      {
+      headers: {"Content-Type": "application/json"}
+    }
     ).pipe(
       tap(response => this.handleAuthResponse(response))
     );

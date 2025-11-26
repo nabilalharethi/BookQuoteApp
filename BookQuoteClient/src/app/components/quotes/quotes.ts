@@ -23,13 +23,23 @@ export class Quotes implements OnInit {
     author: '' 
   };
 
-   ngOnInit(): void {
-   
-    this.quoteService.quotes$.subscribe({
-      next: (quotes: Quote[]) => this.quotes = quotes.slice(0, 5), // show only 5
-      error: (err: any) => console.error('Error loading quotes:', err)
-    });
-  }
+ngOnInit(): void {
+  this.loading = true;
+  
+  // Load quotes from backend
+  this.quoteService.loadQuotes();
+
+  this.quoteService.quotes$.subscribe({
+    next: (quotes: Quote[]) => {
+      this.quotes = quotes.slice(0, 5); // show only 5
+      this.loading = false;
+    },
+    error: (err: any) => {
+      console.error('Error loading quotes:', err);
+      this.loading = false;
+    }
+  });
+}
 
 
 
@@ -94,5 +104,8 @@ export class Quotes implements OnInit {
         alert('Failed to delete quote');
       }
     });
+  }
+    trackById(index: number, quote: Quote): number {
+    return quote.id!;
   }
 }
