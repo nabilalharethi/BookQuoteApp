@@ -9,9 +9,12 @@ public class QuotesController : ControllerBase
 {
     private static List<Quote> quotes = new List<Quote>
     {
-        new Quote { Id = 1, Text = "The only limit is your mind.", Author = "Anonymous", UserId = 1 },
-        new Quote { Id = 2, Text = "Knowledge is power.", Author = "Francis Bacon", UserId = 1 }
-        
+        new Quote { Id = 1, Text = "The only limit is your mind.", Author = "Anonymous"},
+        new Quote { Id = 2, Text = "Knowledge is power.", Author = "Francis Bacon"},
+        new Quote { Id = 3, Text = "Success is not final, failure is not fatal: it is the courage to continue that counts.", Author = "Winston Churchill"},
+        new Quote { Id = 4, Text = "What you think, you become. What you feel, you attract. What you imagine, you create.", Author = "Buddha"},
+        new Quote { Id = 5, Text = "Do what you can, with what you have, where you are.", Author = "Theodore Roosevelt"},
+    
     };
 
     [HttpGet]
