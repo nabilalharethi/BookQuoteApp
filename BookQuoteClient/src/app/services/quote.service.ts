@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Quote {
   id?: number;
@@ -11,7 +12,7 @@ export interface Quote {
 @Injectable({ providedIn: 'root' })
 export class QuoteService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:5000/api/quotes';
+  private apiUrl = `${environment.apiUrl}/quotes`;
 
   // BehaviorSubject to hold quotes
   private quotesSubject = new BehaviorSubject<Quote[]>([]);

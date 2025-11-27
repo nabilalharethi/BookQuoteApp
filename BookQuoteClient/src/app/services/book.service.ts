@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Book {
   id?: number;
@@ -12,7 +13,7 @@ export interface Book {
 @Injectable({ providedIn: 'root' })
 export class BookService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:5000/api/books';
+  private apiUrl = `${environment.apiUrl}/books`;
 
   private bookSubject = new BehaviorSubject<Book[]>([]);
   books$ = this.bookSubject.asObservable();
