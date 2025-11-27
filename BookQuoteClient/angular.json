@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "BookQuoteClient": {
+    "book-quote-clien": {
       "projectType": "application",
       "schematics": {},
       "root": "",
