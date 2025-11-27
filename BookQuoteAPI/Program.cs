@@ -44,6 +44,11 @@ builder.Services.AddSwaggerGen(c =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
     ?? builder.Configuration["DATABASE_URL"];
 
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Database connection string not found.");
+}
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
@@ -104,5 +109,20 @@ app.UseAuthorization();
 app.MapGet("/", () => "BookQuoteAPI is running!");
 
 app.MapControllers();
+
+
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        db.Database.Migrate();
+        Console.WriteLine("Database migrations applied successfully");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Migration failed: {ex.Message}");
+    }
+}
 
 app.Run();
