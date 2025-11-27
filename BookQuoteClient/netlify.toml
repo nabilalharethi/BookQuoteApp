@@ -1,7 +1,7 @@
 [build]
   base = "BookQuoteClient"                       
   publish = "dist/book-quote-client/browser"      
-  command = "npm ci && npm run build -- --configuration production"
+  command = "npm ci && npx ng build --configuration production"
 
 [build.environment]
   NODE_VERSION = "20"                          
