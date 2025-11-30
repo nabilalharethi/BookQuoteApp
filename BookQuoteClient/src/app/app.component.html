@@ -1,9 +1,13 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary" 
      *ngIf="isAuthenticated$ | async">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">
-      <i class="fas fa-book-reader"></i> {{ title }}
-    </a>
+  <a 
+    class="navbar-brand" 
+    [routerLink]="isAuthenticated$ | async ? '/books' : '/login'"
+    style="cursor: pointer;"
+  >
+    <i class="fas fa-book-reader"></i> {{ title }}
+  </a>
 
     <button 
       class="navbar-toggler" 
