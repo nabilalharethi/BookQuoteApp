@@ -3,7 +3,7 @@
   <div class="container-fluid">
   <a 
     class="navbar-brand" 
-    [routerLink]="isAuthenticated$ | async ? '/books' : '/login'"
+    [routerLink]="(isAuthenticated$ | async) ? ['/books'] : ['/login']"
     style="cursor: pointer;"
   >
     <i class="fas fa-book-reader"></i> {{ title }}
