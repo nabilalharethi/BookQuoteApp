@@ -1,6 +1,6 @@
 [build]
   base = "BookQuoteClient"                       
-  publish = "dist/book-quote-client/browser/_redirects"      
+  publish = "dist/book-quote-client/browser"      
   command = "npm install && npm run build"
 
 [build.environment]
