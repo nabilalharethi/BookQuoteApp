@@ -8,7 +8,7 @@ import { BookService, Book } from '../../services/book.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './books.html',
-  styleUrl: './books.css'
+  styleUrls: ['./books.css']
 })
 export class Books implements OnInit {
   private bookService = inject(BookService);

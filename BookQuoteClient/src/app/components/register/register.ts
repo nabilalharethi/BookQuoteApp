@@ -9,7 +9,7 @@ import { Auth } from '../../services/auth';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './register.html',
-  styleUrl: './register.css'
+  styleUrls: ['./register.css']
 })
 export class Register {
   private authService = inject(Auth);

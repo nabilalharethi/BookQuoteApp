@@ -9,7 +9,7 @@ import { BookService, Book } from '../../services/book.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './book-form.html',
-  styleUrl: './book-form.css'
+  styleUrls: ['./book-form.css']
 })
 export class BookForm implements OnInit {
   private bookService = inject(BookService);
