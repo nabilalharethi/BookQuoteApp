@@ -71,6 +71,13 @@ public class AuthController : ControllerBase
         return hashOfInput == hash;
     }
 
+    [HttpGet("login")]
+    public IActionResult LoginInfo()
+    {
+        return Ok("Login endpoint requires POST. Use POST /api/auth/login with username and password.");
+    }
+
+
 
        [HttpPost("login")]
     public async Task<ActionResult<AuthResponseDto>> Login(LoginDto request)
