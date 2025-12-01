@@ -85,6 +85,7 @@ builder.Services.AddCors(options =>
                     "http://localhost:4201",
                     "http://127.0.0.1:4200",
                     "https://lambent-banoffee-8d7b6f.netlify.app",  // Allow Netlify
+                    "https://*.netlify.app",  // Allow Netlify
                     "https://*.onrender.com") // Allow Render
                   .SetIsOriginAllowedToAllowWildcardSubdomains()
                   .AllowAnyHeader()
