@@ -102,9 +102,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseCors("AllowAngularApp");
 app.UseHttpsRedirection();
+app.UseCors("AllowAngularApp");
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapGet("/", () => "BookQuoteAPI is running!");
