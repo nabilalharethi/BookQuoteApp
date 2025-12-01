@@ -23,7 +23,7 @@ export interface RegisterRequest {
 })
 export class Auth {
   private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/auth`;
+  private apiUrl = `${environment.apiUrl}api/auth`;
   private tokenKey = 'auth_token';
   private usernameKey = 'username';
   
