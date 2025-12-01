@@ -38,7 +38,7 @@ export class Auth {
 
   register(request: RegisterRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(
-      `${this.apiUrl}/register`, 
+      `${this.apiUrl}api/register`, 
       request,
             {
       headers: {"Content-Type": "application/json"}
