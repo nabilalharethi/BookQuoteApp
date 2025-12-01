@@ -23,7 +23,7 @@ export interface RegisterRequest {
 })
 export class Auth {
   private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}api/auth`;
+  private apiUrl = `${environment.apiUrl}/auth`;
   private tokenKey = 'auth_token';
   private usernameKey = 'username';
   
@@ -38,7 +38,7 @@ export class Auth {
 
   register(request: RegisterRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(
-      `${this.apiUrl}api/register`, 
+      `${this.apiUrl}/register`, 
       request,
             {
       headers: {"Content-Type": "application/json"}
