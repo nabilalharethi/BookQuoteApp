@@ -15,27 +15,26 @@
       "architect": {
         "build": {
           "builder": "@angular/build:application",
-      "options": {
-        "outputPath": "dist/book-quote-client/browser",
-        "browser": "src/main.ts",
-        "tsConfig": "tsconfig.app.json",
-        "assets": [
-          {
-            "glob": "**/*",
-            "input": "public"
+          "options": {
+            "outputPath": "dist/book-quote-client/browser",
+            "browser": "src/main.ts",
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              },
+              "src/_redirects"
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "src/styles.css"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
           },
-          "src/_redirects"
-        ],
-        "styles": [
-          "node_modules/bootstrap/dist/css/bootstrap.min.css",
-          "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-          "src/styles.css"
-        ],
-        "scripts": [
-          "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-        ]
-      },
-
           "configurations": {
             "production": {
               "fileReplacements": [
@@ -44,10 +43,10 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-             "optimization": true,
-            "sourceMap": false,
-            "namedChunks": false,
-            "extractLicenses": true,
+              "optimization": true,
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -74,10 +73,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "BookQuoteClient:build:production"
+              "buildTarget": "book-quote-client:build:production"
             },
             "development": {
-              "buildTarget": "BookQuoteClient:build:development"
+              "buildTarget": "book-quote-client:build:development"
             }
           },
           "defaultConfiguration": "development"
