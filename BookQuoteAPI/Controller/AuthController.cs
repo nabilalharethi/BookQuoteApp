@@ -89,7 +89,11 @@ public class AuthController : ControllerBase
         // Verify user exists and password is correct
         if (user == null || !VerifyPassword(request.Password, user.PasswordHash))
         {
-            return BadRequest("Invalid username or password");
+            return NotFound(new {messge = "User Not found"});
+        }
+        if (!VerifyPassword(request.Password, user.PasswordHash))
+        {
+            return Unauthorized(new { message = "Invalid password" });
         }
 
         // Generate JWT token
