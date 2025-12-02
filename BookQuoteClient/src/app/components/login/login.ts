@@ -20,6 +20,13 @@ export class Login {
   private authService = inject(Auth);
   private router = inject(Router);
 
+    ngOnInit(): void {
+    // Redirect if user is already logged in
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/books']);
+    }
+  }
+
   onSubmit(loginForm: NgForm): void {
     if (loginForm.invalid) return;
 
@@ -34,12 +41,25 @@ export class Login {
     this.authService.login(request).subscribe({
       next: (res) => {
         this.isLoading = false;
-        this.router.navigate(['/books']);
+        if (res?.username) {
+          this.router.navigate(['/books']);
+        } else {
+          this.errorMessage = 'Login failed: username not found.';
+        }
       },
       error: (err) => {
         this.isLoading = false;
-        // Display backend error or default message
-        this.errorMessage = err.error || 'Invalid username or password';
+
+        // More robust error handling
+        if (err.status === 0) {
+          this.errorMessage = 'Network error or CORS issue. Check backend.';
+        } else if (err.error?.messge) {
+          this.errorMessage = err.error.messge; // notice typo from backend: 'messge'
+        } else if (err.error?.message) {
+          this.errorMessage = err.error.message;
+        } else {
+          this.errorMessage = 'Invalid username or password';
+        }
       }
     });
   }

@@ -12,7 +12,7 @@ public class Book
 
     [Required, MaxLength(255)]
     public string Author { get; set; } = string.Empty;
-    public DateTime PublicationDate { get; set; }
+    public DateTime? PublicationDate { get; set; }
     public int UserId { get; set; }
     public User? User { get; set; }
     
