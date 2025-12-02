@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 
 export interface AuthResponse {
   token: string;
-  Username: string;
+  username: string;
 }
 
 export interface LoginRequest {
@@ -62,7 +62,7 @@ export class Auth {
 
   private handleAuthResponse(response: AuthResponse): void {
     localStorage.setItem(this.tokenKey, response.token);
-    localStorage.setItem(this.usernameKey, response.Username);
+    localStorage.setItem(this.usernameKey, response.username);
     this.isAuthenticatedSubject.next(true);
   }
 
