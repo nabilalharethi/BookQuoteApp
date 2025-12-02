@@ -22,8 +22,13 @@ public class BooksController : ControllerBase
     private int GetUserId()
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        return int.Parse(userIdClaim ?? "0");
+    if (string.IsNullOrEmpty(userIdClaim))
+    {
+        throw new UnauthorizedAccessException("User ID not found in token.");
     }
+
+    return int.Parse(userIdClaim);
+}
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Book>>> GetBooks()

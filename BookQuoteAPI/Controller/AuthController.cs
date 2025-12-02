@@ -89,7 +89,7 @@ public class AuthController : ControllerBase
         // Verify user exists and password is correct
         if (user == null || !VerifyPassword(request.Password, user.PasswordHash))
         {
-            return NotFound(new {messge = "User Not found"});
+            return NotFound(new {message = "User Not found"});
         }
         if (!VerifyPassword(request.Password, user.PasswordHash))
         {
