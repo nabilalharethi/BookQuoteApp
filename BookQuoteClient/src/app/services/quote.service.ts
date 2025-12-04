@@ -39,10 +39,12 @@ export class QuoteService {
   
   createQuote(quote: Quote): Observable<Quote> {
     return this.http.post<Quote>(this.apiUrl, quote).pipe(
-      tap(() => this.loadQuotes()) 
-    );
-  }
-
+      tap(created => {
+      const current = this.quotesSubject.value;
+      this.quotesSubject.next([...current, created]);
+    })
+  );
+ }
 
   updateQuote(id: number, quote: Quote): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/${id}`, quote).pipe(
