@@ -6,7 +6,7 @@
     </a>
   </div>
 
-  @if (loading) {
+  @if (loading && books.length === 0) {
     <div class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
@@ -15,7 +15,7 @@
     </div>
   } 
   
-  @else if (books.length === 0) {
+  @else if (books.length === 0 && !loading) {
     <div class="alert alert-info">
       <i class="fas fa-info-circle"></i> 
       No books found. Click "Add New Book" to get started!
@@ -38,7 +38,7 @@
             <tr>
               <td>{{ book.title }}</td>
               <td>{{ book.author }}</td>
-              <td>{{ book.publicationDate | date }}</td>
+              <td>{{ book.publicationDate | date: 'mediumDate' }}</td>
               <td>
                 <a 
                   [routerLink]="['/books/edit', book.id]" 
@@ -49,8 +49,16 @@
                 <button 
                   (click)="deleteBook(book.id)" 
                   class="btn btn-sm btn-danger"
+                  [disabled]="isDeleting(book.id)"
                 >
-                  <i class="fas fa-trash"></i> Delete
+                  @if (isDeleting(book.id)) {
+                    <span class="spinner-border spinner-border-sm me-1" role="status">
+                      <span class="visually-hidden">Deleting...</span>
+                    </span>
+                  } @else {
+                    <i class="fas fa-trash"></i>
+                  }
+                  Delete
                 </button>
               </td>
             </tr>
