@@ -78,7 +78,10 @@ export class BookForm implements OnInit {
 
       if (this.isEditMode && this.bookId) {
         this.bookService.updateBook(this.bookId, payload).subscribe({
-          next: () => this.router.navigate(['/books']),
+          next: () => {
+              this.router.navigate(['/books']);
+              this.bookService.triggerBooksListRefresh();
+          },
           error: (err) => {
             console.error('Error updating book:', err);
             this.errorMessage = 'Failed to update book';
@@ -86,7 +89,13 @@ export class BookForm implements OnInit {
         });
       } else {
         this.bookService.createBook(payload).subscribe({
-          next: () => this.router.navigate(['/books']),
+          next: () => {
+            this.bookService.triggerBooksListRefresh();
+            this.router.navigate(['/books']);
+
+          },
+            
+            
           error: (err) => {
             console.error('Error creating book:', err);
             this.errorMessage = 'Failed to create book';

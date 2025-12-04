@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface Book {
@@ -14,9 +14,15 @@ export interface Book {
 export class BookService {
   private http = inject(HttpClient);
   private apiUrl = `${environment.apiUrl}/books`;
+  private _booksListRefresh = new Subject<void>();
+  public booksListRefresh$ = this._booksListRefresh.asObservable();
 
   private bookSubject = new BehaviorSubject<Book[]>([]);
   books$ = this.bookSubject.asObservable();
+
+  public triggerBooksListRefresh(): void {
+    this._booksListRefresh.next();
+  }
 
   constructor() {
     this.loadBooks(); // initial load
