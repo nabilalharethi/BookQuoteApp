@@ -19,7 +19,7 @@ export class BookForm implements OnInit {
   book: Book = { 
     title: '', 
     author: '', 
-    publicationDate: '' 
+    publicationDate: null 
   };
   
   isEditMode = false;
@@ -35,27 +35,24 @@ export class BookForm implements OnInit {
     }
   }
 
-    /** Helper to normalize any date string into yyyy-MM-dd format */
-  private normalizeDate(dateString: string | null): string {
+    private normalizeDate(dateString: string | null): string {
     if (!dateString) return '';
-
-    
-    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return dateString;
-
-    
     const d = new Date(dateString);
-    if (isNaN(d.getTime())) return ''; 
-    return d.toISOString().split('T')[0];
+    if (isNaN(d.getTime())) return '';
+    const year = d.getFullYear();
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
+
+
 
   loadBook(id: number): void {
     this.bookService.getBook(id).subscribe({
       next: (book) => {
         this.book = book;
-        if (this.book.publicationDate) {
-          const date = new Date(this.book.publicationDate);
-          this.book.publicationDate = date.toISOString().split('T')[0];
-        }
+        this.book.publicationDate = this.normalizeDate(book.publicationDate);
+  
       },
       error: (error) => {
         console.error('Error loading book:', error);
