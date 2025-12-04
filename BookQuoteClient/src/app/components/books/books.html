@@ -7,6 +7,7 @@
   </div>
 
   @if (loading && books.length === 0) {
+    <!-- Initial loading state -->
     <div class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
@@ -16,6 +17,7 @@
   } 
   
   @else if (books.length === 0 && !loading) {
+    <!-- No books state -->
     <div class="alert alert-info">
       <i class="fas fa-info-circle"></i> 
       No books found. Click "Add New Book" to get started!
@@ -23,7 +25,17 @@
   } 
   
   @else {
+    <!-- Books table - shows even while loading (for delete operations) -->
     <div class="table-responsive">
+      @if (loading) {
+        <!-- Small loading indicator for background reloads -->
+        <div class="d-flex justify-content-center mb-2">
+          <div class="spinner-border spinner-border-sm text-primary" role="status">
+            <span class="visually-hidden">Reloading...</span>
+          </div>
+          <span class="ms-2 text-muted">Updating...</span>
+        </div>
+      }
       <table class="table table-striped table-hover">
         <thead>
           <tr>

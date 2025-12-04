@@ -46,12 +46,11 @@ export class Books implements OnInit, OnDestroy {
       next: (books) => {
         this.books = books;
         this.loading = false;
-        this.deletingId = null;
       },
       error: (error) => {
         console.error('Error loading books:', error);
         this.loading = false;
-        this.deletingId = null;
+        
       }
     });
   }
@@ -70,10 +69,8 @@ export class Books implements OnInit, OnDestroy {
     this.bookService.deleteBook(id).subscribe({
       next: () => {
         
-        this.loadBooks();
-        
-        
-       
+        this.books = this.books.filter(book => book.id !== id);
+        this.deletingId = null;     
         
       },
       error: (error) => {
