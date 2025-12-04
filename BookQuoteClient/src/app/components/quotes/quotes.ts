@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { QuoteService, Quote } from '../../services/quote.service';
@@ -7,28 +7,17 @@ import { QuoteService, Quote } from '../../services/quote.service';
   selector: 'app-quotes',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './quotes.html',
+  templateUrl: './quotes.html', 
   styleUrls: ['./quotes.css']
 })
-export class Quotes implements OnInit {
+export class Quotes {
   private quoteService = inject(QuoteService);
 
-  // ✅ Expose the observable directly
   quotes$ = this.quoteService.quotes$;
   
-  loading = false;
   showForm = false;
   editingQuote: Quote | null = null;
-  
-  newQuote: Quote = { 
-    text: '', 
-    author: '' 
-  };
-
-  ngOnInit(): void {
-    // Optional: show loading during initial fetch
-    // But your service handles data — so often not needed
-  }
+  newQuote: Quote = { text: '', author: '' };
 
   showAddForm(): void {
     this.showForm = true;
