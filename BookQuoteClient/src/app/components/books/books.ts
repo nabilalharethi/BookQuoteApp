@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { BookService, Book } from '../../services/book.service';
 
 @Component({
@@ -12,12 +12,22 @@ import { BookService, Book } from '../../services/book.service';
 })
 export class Books implements OnInit {
   private bookService = inject(BookService);
+  private router = inject(Router);
 
   books: Book[] = [];
   loading = false;
 
   ngOnInit(): void {
     this.loadBooks();
+  }
+
+    constructor() {
+    // Listen for route changes
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd && this.router.url === '/books') {
+        this.loadBooks();
+      }
+    });
   }
 
   loadBooks(): void {
