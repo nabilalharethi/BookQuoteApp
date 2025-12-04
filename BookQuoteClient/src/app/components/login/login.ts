@@ -38,29 +38,47 @@ export class Login {
       Password: this.Password
     };
 
-    this.authService.login(request).subscribe({
-      next: (res) => {
-        this.isLoading = false;
-        if (res?.username) {
-          this.router.navigate(['/books']);
-        } else {
-          this.errorMessage = 'Login failed: username not found.';
-        }
-      },
-      error: (err) => {
-        this.isLoading = false;
+      this.authService.login(request).subscribe({
+    next: (res) => {
+      this.isLoading = false;
 
-        // More robust error handling
-        if (err.status === 0) {
-          this.errorMessage = 'Network error or CORS issue. Check backend.';
-        } else if (err.error?.messge) {
-          this.errorMessage = err.error.messge; // notice typo from backend: 'messge'
-        } else if (err.error?.message) {
-          this.errorMessage = err.error.message;
-        } else {
-          this.errorMessage = 'Invalid username or password';
-        }
+      if (res?.username) {
+        this.router.navigate(['/books']);
+      } else {
+        this.errorMessage = 'Login failed: username not found.';
       }
-    });
+    },
+    error: (err) => {
+      this.isLoading = false;
+
+      
+      if (err.status === 0) {
+        this.errorMessage = 'Network error or CORS issue. Check backend.';
+        return;
+      }
+
+      
+      if (typeof err.error === 'string') {
+        this.errorMessage = err.error;
+        return;
+      }
+
+      
+      if (err.error?.messge) {
+        this.errorMessage = err.error.messge;
+        return;
+      }
+
+      
+      if (err.error?.message) {
+        this.errorMessage = err.error.message;
+        return;
+      }
+
+     
+      this.errorMessage = 'Invalid username or password';
+    }
+  });
+
   }
 }

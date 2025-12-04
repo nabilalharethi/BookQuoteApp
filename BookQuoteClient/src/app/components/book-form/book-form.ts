@@ -51,8 +51,18 @@ export class BookForm implements OnInit {
     });
   }
 
+  /** Convert to UTC ISO before sending to backend */
+  private convertToUtcIso(): void {
+    if (this.book.publicationDate) {
+      const date = new Date(this.book.publicationDate);
+      this.book.publicationDate = date.toISOString(); 
+    }
+  }
+
   onSubmit(): void {
     this.errorMessage = '';
+
+    this.convertToUtcIso();
 
     if (this.isEditMode && this.bookId) {
       this.bookService.updateBook(this.bookId, this.book).subscribe({

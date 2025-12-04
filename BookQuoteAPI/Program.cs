@@ -77,14 +77,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // Configure CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngularApp",
+    options.AddPolicy("AllowFrontend",
         policy =>
         {
             policy.WithOrigins(
+                    "https://lambent-banoffee-8d7b6f.netlify.app",
                     "http://localhost:4200",
                     "http://localhost:4201",
-                    "http://127.0.0.1:4200",
-                    "https://lambent-banoffee-8d7b6f.netlify.app"  // Allow Netlify
+                    "http://127.0.0.1:4200"
+                      
             )
                   .AllowAnyHeader()
                   .AllowAnyMethod()
@@ -101,7 +102,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowAngularApp");
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
