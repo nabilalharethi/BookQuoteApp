@@ -6,7 +6,9 @@
     </a>
   </div>
 
-  @if (loading && books.length === 0) {
+  @let bookList = books$ | async;
+
+  @if (loading && (!bookList || bookList.length === 0)) {
     <!-- Initial loading state -->
     <div class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
@@ -15,15 +17,13 @@
       <p class="mt-2">Loading books...</p>
     </div>
   } 
-  
-  @else if (books.length === 0 && !loading) {
+  @else if (bookList && bookList.length === 0 && !loading) {
     <!-- No books state -->
     <div class="alert alert-info">
       <i class="fas fa-info-circle"></i> 
       No books found. Click "Add New Book" to get started!
     </div>
   } 
-  
   @else {
     <!-- Books table - shows even while loading (for delete operations) -->
     <div class="table-responsive">
@@ -46,7 +46,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (book of books; track book.id) {
+          @for (book of bookList; track book.id) {
             <tr>
               <td>{{ book.title }}</td>
               <td>{{ book.author }}</td>
