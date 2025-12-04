@@ -48,14 +48,24 @@ export class QuoteService {
 
   updateQuote(id: number, quote: Quote): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/${id}`, quote).pipe(
-      tap(() => this.loadQuotes()) 
-    );
-  }
+     tap(updated => {
+      const current = this.quotesSubject.value;
+      const newList = current.map(q =>
+        q.id === id ? { ...q, ...quote } : q
+      );
+      this.quotesSubject.next(newList);
+    })
+  );
+ }
 
 
   deleteQuote(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
-      tap(() => this.loadQuotes()) 
-    );
-  }
+      tap(() => {
+      const current = this.quotesSubject.value;
+      const newList = current.filter(q => q.id !== id);
+      this.quotesSubject.next(newList);
+    })
+  );
+ }
 }
