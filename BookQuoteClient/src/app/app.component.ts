@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  
   getUsername(): string | null {
     return this.authService.getUsername();
   }
