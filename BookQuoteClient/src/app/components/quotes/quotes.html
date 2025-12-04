@@ -61,48 +61,56 @@
     </div>
   </div>
 
-  <div *ngIf="loading" class="text-center py-5">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-    <p class="mt-2">Loading quotes...</p>
-  </div>
 
-  <div *ngIf="!loading && quotes.length === 0" class="alert alert-info">
-    <i class="fas fa-info-circle"></i> 
-    No quotes found. Click "Add New Quote" to get started!
-  </div>
+  @let quoteList = quotes$ | async;
 
-  <div *ngIf="!loading && quotes.length > 0" class="row">
-    <div *ngFor="let quote of quotes; trackBy: trackById" class="col-md-6 mb-3">
-      <div class="card h-100 quote-card">
-        <div class="card-body">
-          <blockquote class="blockquote mb-0">
-            <p class="quote-text">
-              <i class="fas fa-quote-left text-muted"></i> 
-              {{ quote.text }} 
-              <i class="fas fa-quote-right text-muted"></i>
-            </p>
-            <footer class="blockquote-footer mt-2">
-              {{ quote.author }}
-            </footer>
-          </blockquote>
-        </div>
-        <div class="card-footer d-flex gap-2">
-          <button 
-            (click)="showEditForm(quote)" 
-            class="btn btn-sm btn-warning"
-          >
-            <i class="fas fa-edit"></i> Edit
-          </button>
-          <button 
-            (click)="deleteQuote(quote.id)" 
-            class="btn btn-sm btn-danger"
-          >
-            <i class="fas fa-trash"></i> Delete
-          </button>
-        </div>
+  @if (quoteList === undefined) {
+    
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
       </div>
+      <p class="mt-2">Loading quotes...</p>
     </div>
-  </div>
+  } @else if (quoteList.length === 0) {
+    <div class="alert alert-info">
+      <i class="fas fa-info-circle"></i> 
+      No quotes found. Click "Add New Quote" to get started!
+    </div>
+  } @else {
+    <div class="row">
+      @for (quote of quoteList; track trackById(0, quote)) {
+        <div class="col-md-6 mb-3">
+          <div class="card h-100 quote-card">
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+                <p class="quote-text">
+                  <i class="fas fa-quote-left text-muted"></i> 
+                  {{ quote.text }} 
+                  <i class="fas fa-quote-right text-muted"></i>
+                </p>
+                <footer class="blockquote-footer mt-2">
+                  {{ quote.author }}
+                </footer>
+              </blockquote>
+            </div>
+            <div class="card-footer d-flex gap-2">
+              <button 
+                (click)="showEditForm(quote)" 
+                class="btn btn-sm btn-warning"
+              >
+                <i class="fas fa-edit"></i> Edit
+              </button>
+              <button 
+                (click)="deleteQuote(quote.id)" 
+                class="btn btn-sm btn-danger"
+              >
+                <i class="fas fa-trash"></i> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
 </div>

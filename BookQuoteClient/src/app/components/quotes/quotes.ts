@@ -13,7 +13,9 @@ import { QuoteService, Quote } from '../../services/quote.service';
 export class Quotes implements OnInit {
   private quoteService = inject(QuoteService);
 
-  quotes: Quote[] = [];
+  // ✅ Expose the observable directly
+  quotes$ = this.quoteService.quotes$;
+  
   loading = false;
   showForm = false;
   editingQuote: Quote | null = null;
@@ -23,25 +25,10 @@ export class Quotes implements OnInit {
     author: '' 
   };
 
-ngOnInit(): void {
-  this.loading = true;
-  
-  // Load quotes from backend
-  this.quoteService.loadQuotes();
-
-  this.quoteService.quotes$.subscribe({
-    next: (quotes: Quote[]) => {
-      this.quotes = quotes;
-      this.loading = false;
-    },
-    error: (err: any) => {
-      console.error('Error loading quotes:', err);
-      this.loading = false;
-    }
-  });
-}
-
-
+  ngOnInit(): void {
+    // Optional: show loading during initial fetch
+    // But your service handles data — so often not needed
+  }
 
   showAddForm(): void {
     this.showForm = true;
@@ -56,15 +43,9 @@ ngOnInit(): void {
   }
 
   onSubmit(): void {
-    if (this.editingQuote && this.editingQuote.id) {
-      this.quoteService.updateQuote(
-        this.editingQuote.id, 
-        this.newQuote
-      ).subscribe({
-        next: () => {
-          
-          this.cancelForm();
-        },
+    if (this.editingQuote?.id) {
+      this.quoteService.updateQuote(this.editingQuote.id, this.newQuote).subscribe({
+        next: () => this.cancelForm(),
         error: (error) => {
           console.error('Error updating quote:', error);
           alert('Failed to update quote');
@@ -72,10 +53,7 @@ ngOnInit(): void {
       });
     } else {
       this.quoteService.createQuote(this.newQuote).subscribe({
-        next: () => {
-          
-          this.cancelForm();
-        },
+        next: () => this.cancelForm(),
         error: (error) => {
           console.error('Error creating quote:', error);
           alert('Failed to create quote');
@@ -94,18 +72,15 @@ ngOnInit(): void {
     if (!id || !confirm('Are you sure you want to delete this quote?')) {
       return;
     }
-
     this.quoteService.deleteQuote(id).subscribe({
-      next: () => {
-        
-      },
       error: (error) => {
         console.error('Error deleting quote:', error);
         alert('Failed to delete quote');
       }
     });
   }
-    trackById(index: number, quote: Quote): number {
+
+  trackById(index: number, quote: Quote): number {
     return quote.id!;
   }
 }
