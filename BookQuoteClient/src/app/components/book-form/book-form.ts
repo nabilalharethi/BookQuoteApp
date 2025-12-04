@@ -35,6 +35,19 @@ export class BookForm implements OnInit {
     }
   }
 
+    /** Helper to normalize any date string into yyyy-MM-dd format */
+  private normalizeDate(dateString: string | null): string {
+    if (!dateString) return '';
+
+    
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return dateString;
+
+    
+    const d = new Date(dateString);
+    if (isNaN(d.getTime())) return ''; 
+    return d.toISOString().split('T')[0];
+  }
+
   loadBook(id: number): void {
     this.bookService.getBook(id).subscribe({
       next: (book) => {
